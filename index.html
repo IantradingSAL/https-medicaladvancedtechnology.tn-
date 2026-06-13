@@ -227,6 +227,8 @@
   .dimg .nav svg{width:22px;height:22px}
   .dimg .counter{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);background:rgba(11,58,73,.85);color:#fff;font-size:11px;font-weight:700;letter-spacing:.5px;padding:5px 13px;border-radius:20px;z-index:2}
   .dswipe{text-align:center;font-size:11px;color:var(--muted);margin:-4px 0 14px}
+  .simwrap{margin-top:6px;border-top:1px solid var(--line);padding-top:16px}
+  .simh{font-size:15px;font-weight:800;color:var(--navy);padding:0 20px 12px}
   /* tab bar */
   .tabbar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:440px;z-index:50;
     background:rgba(255,255,255,.94);backdrop-filter:blur(14px);border-top:1px solid var(--line);display:flex;
@@ -340,6 +342,10 @@
           <div class="dprice">Sur devis</div>
           <div class="dnote">Le prix et la disponibilité exacte sont confirmés par l'équipe Medical Advanced Technology après réception de votre commande.</div>
           <div id="d-controls"></div>
+        </div>
+        <div class="simwrap">
+          <h3 class="simh">Produits similaires</h3>
+          <div class="rail" id="d-similar"></div>
         </div>
       </div>
     </section>
@@ -533,6 +539,15 @@ function imgFallback(el){el.onerror=null;el.src=PLACEHOLDER;}
 const allProducts=[...novelties.map(p=>({...mk(p),isNew:true})),...featured.map(p=>({...mk(p),isNew:false}))];
 const P={}; allProducts.forEach(p=>P[p.slug]=p);
 const ORDER=allProducts.map(p=>p.slug);
+const STOP=new Set(['for','and','the','with','de','la','le','plain','cut','double','sided','style','core','end','round','steel','sur','des']);
+function tokenize(name){return name.toLowerCase().replace(/[^a-z0-9 ]/g,' ').split(/\s+/).filter(w=>w.length>2&&!STOP.has(w));}
+const TOK={};ORDER.forEach(s=>TOK[s]=new Set(tokenize(P[s].name)));
+function similar(slug,n){
+  const base=TOK[slug]||new Set();
+  return ORDER.filter(s=>s!==slug)
+    .map(s=>{let sc=0;TOK[s].forEach(t=>{if(base.has(t))sc++;});return{s:s,sc:sc};})
+    .sort((a,b)=>b.sc-a.sc).slice(0,n).map(x=>x.s);
+}
 
 let cart=store.get("mat_cart")||{};
 let selShip=store.get("mat_ship")||"standard";
@@ -595,6 +610,7 @@ function renderDetail(){
   document.getElementById('d-name').textContent=p.name;
   document.getElementById('d-counter').textContent=(dIdx+1)+' / '+ORDER.length;
   document.getElementById('d-controls').innerHTML=detailControls(slug);
+  var sim=document.getElementById('d-similar');if(sim)sim.innerHTML=similar(slug,8).map(function(s){return cardHTML(P[s]);}).join('');
   const m=document.querySelector('main');if(m)m.scrollTop=0;
 }
 function openProduct(slug){
