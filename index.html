@@ -75,9 +75,9 @@
   .sec-head{display:flex;align-items:baseline;justify-content:space-between;padding:0 18px 12px}
   .sec-head h2{font-size:17px;font-weight:800;color:var(--navy);letter-spacing:.2px}
   .sec-head .pill{font-size:11px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.5px;cursor:pointer}
-  .rail{display:flex;gap:14px;overflow-x:auto;padding:2px 16px 8px;scroll-snap-type:x mandatory}
+  .rail{display:flex;gap:14px;overflow-x:auto;padding:2px 16px 10px;scroll-snap-type:x mandatory;scroll-padding-left:16px;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
   .rail::-webkit-scrollbar{display:none}
-  .rail .card{flex:0 0 158px;scroll-snap-align:start}
+  .rail .card{flex:0 0 160px;scroll-snap-align:start;scroll-snap-stop:always}
   .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;
     box-shadow:var(--shadow-sm);display:flex;flex-direction:column;text-decoration:none;color:inherit}
   .card:active{transform:scale(.985)}
@@ -221,6 +221,12 @@
   .detail .dq{display:flex;align-items:center;gap:14px;margin-bottom:12px}
   .detail .dq .stepper{flex:none;width:140px}
   .detail .dq b{font-weight:700;color:var(--navy);font-size:13.5px}
+  .dimg .nav{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:#fff;box-shadow:var(--shadow);display:grid;place-items:center;cursor:pointer;color:var(--navy);z-index:2}
+  .dimg .nav:active{background:var(--mint)}
+  .dimg .nav.prev{left:10px}.dimg .nav.next{right:10px}
+  .dimg .nav svg{width:22px;height:22px}
+  .dimg .counter{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);background:rgba(11,58,73,.85);color:#fff;font-size:11px;font-weight:700;letter-spacing:.5px;padding:5px 13px;border-radius:20px;z-index:2}
+  .dswipe{text-align:center;font-size:11px;color:var(--muted);margin:-4px 0 14px}
   /* tab bar */
   .tabbar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:440px;z-index:50;
     background:rgba(255,255,255,.94);backdrop-filter:blur(14px);border-top:1px solid var(--line);display:flex;
@@ -244,7 +250,7 @@
 
   <header>
     <div class="brand" onclick="go('home')">
-      <img src="https://medicaladvancedtechnology.tn/wp-content/uploads/2026/05/WhatsApp_Image_2026-05-25_at_01.22.46-removebg-preview.png" alt="MAT">
+      <img src="https://medicaladvancedtechnology.tn/wp-content/uploads/2026/05/WhatsApp_Image_2026-05-25_at_01.22.46-removebg-preview.png" alt="MAT" onerror="this.style.display='none'">
       <div class="bt"><b>Medical Advanced</b><span>Technology</span></div>
     </div>
     <div class="hbtns">
@@ -293,9 +299,9 @@
       </div>
       <div class="section"><div class="sec-head"><h2>Nos partenaires</h2></div>
         <div class="partners">
-          <span><img src="https://medicaladvancedtechnology.tn/wp-content/uploads/2026/04/images-1.png" alt="Pinidi Dental Co"></span>
-          <span><img src="https://medicaladvancedtechnology.tn/wp-content/uploads/2026/04/images-300x123.png" alt="LE MED instruments"></span>
-          <span><img src="https://medicaladvancedtechnology.tn/wp-content/uploads/2026/04/images-1.png" alt="Pinidi Dental Co"></span>
+          <span><img src="https://medicaladvancedtechnology.tn/wp-content/uploads/2026/04/images-1.png" alt="Pinidi Dental Co" onerror="this.parentNode.style.display='none'"></span>
+          <span><img src="https://medicaladvancedtechnology.tn/wp-content/uploads/2026/04/images-300x123.png" alt="LE MED instruments" onerror="this.parentNode.style.display='none'"></span>
+          <span><img src="https://medicaladvancedtechnology.tn/wp-content/uploads/2026/04/images-1.png" alt="Pinidi Dental Co" onerror="this.parentNode.style.display='none'"></span>
         </div>
       </div>
       <p class="footnote">&copy; 2026 Medical Advanced Technology &middot; Sousse, Tunisie<br>Tous droits réservés &mdash; Medical Advanced Technology</p>
@@ -321,7 +327,13 @@
         <div><h2>Détails produit</h2><small>Prix sur devis</small></div>
       </div>
       <div class="detail">
-        <div class="dimg" id="d-imgbox"><img id="d-img" src="" alt=""></div>
+        <div class="dimg" id="d-imgbox">
+          <button class="nav prev" onclick="navProduct(-1)" aria-label="Précédent"><svg fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m15 18-6-6 6-6"/></svg></button>
+          <img id="d-img" src="" alt="" onerror="imgFallback(this)">
+          <button class="nav next" onclick="navProduct(1)" aria-label="Suivant"><svg fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m9 6 6 6-6 6"/></svg></button>
+          <span class="counter" id="d-counter"></span>
+        </div>
+        <div class="dswipe">‹ Glissez pour parcourir les produits ›</div>
         <div class="dbody">
           <h1 id="d-name"></h1>
           <div class="avail"><span class="dot"></span><span id="d-avail">Disponible sur commande</span></div>
@@ -413,6 +425,33 @@
         <button class="btn-ghost" onclick="resetCart();go('home')">Retour à l'accueil</button>
       </div>
     </section>
+
+    <!-- CONTACT -->
+    <section class="view" id="view-contact">
+      <div class="cwrap">
+        <div class="chero">
+          <img src="https://medicaladvancedtechnology.tn/wp-content/uploads/2026/04/Design_sans_titre__1_-removebg-preview-1.png" alt="MAT" onerror="this.style.display='none'">
+          <p>Solutions avancées en équipements médicaux.</p>
+        </div>
+        <a class="crow" href="tel:73321860">
+          <div class="ic"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/></svg></div>
+          <div class="tx"><b>Téléphone</b><span>73 321 860</span></div>
+        </a>
+        <a class="crow" href="mailto:medicaladvancedtechnology@yahoo.fr">
+          <div class="ic"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path stroke-linecap="round" d="m2 7 10 6 10-6"/></svg></div>
+          <div class="tx"><b>Email</b><span>medicaladvancedtechnology@yahoo.fr</span></div>
+        </a>
+        <a class="crow" href="https://maps.google.com/?q=Zone+Industrielle+Sidi+Abdelhamid+Sousse+Tunisie" target="_blank" rel="noopener">
+          <div class="ic"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div class="tx"><b>Adresse</b><span>Zone Industrielle, Sidi Abd Lahmid, Rue Oxygène, Sousse, Tunisie</span></div>
+        </a>
+        <a class="crow" href="https://www.facebook.com/share/1HEprLECkc/?mibextid=wwXIfr" target="_blank" rel="noopener">
+          <div class="ic"><svg fill="currentColor" viewBox="0 0 24 24"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12Z"/></svg></div>
+          <div class="tx"><b>Facebook</b><span>Suivez-nous</span></div>
+        </a>
+        <p class="footnote">&copy; 2026 Medical Advanced Technology<br>Tous droits réservés &mdash; Medical Advanced Technology</p>
+      </div>
+    </section>
   </main>
 
   <div class="checkbar" id="checkbar" style="display:none">
@@ -489,8 +528,11 @@ const PAYMENT=[
 const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 
 const mk=p=>({name:p[0],slug:p[1],img:IMG+p[2]});
+const PLACEHOLDER="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20120%20120'%3E%3Crect%20width='120'%20height='120'%20fill='%23e8f7f9'/%3E%3Cg%20fill='none'%20stroke='%2313a3b8'%20stroke-width='6'%20stroke-linecap='round'%3E%3Cpath%20d='M60%2044v32M44%2060h32'/%3E%3C/g%3E%3C/svg%3E";
+function imgFallback(el){el.onerror=null;el.src=PLACEHOLDER;}
 const allProducts=[...novelties.map(p=>({...mk(p),isNew:true})),...featured.map(p=>({...mk(p),isNew:false}))];
 const P={}; allProducts.forEach(p=>P[p.slug]=p);
+const ORDER=allProducts.map(p=>p.slug);
 
 let cart=store.get("mat_cart")||{};
 let selShip=store.get("mat_ship")||"standard";
@@ -504,7 +546,7 @@ function controls(slug){
 }
 function cardHTML(p){
   return '<div class="card" data-slug="'+p.slug+'" onclick="openProduct(\''+p.slug+'\')">'+
-    '<div class="imgbox">'+(p.isNew?'<span class="tag new">Nouveau</span>':'')+'<img loading="lazy" src="'+p.img+'" alt="'+p.name+'"></div>'+
+    '<div class="imgbox">'+(p.isNew?'<span class="tag new">Nouveau</span>':'')+'<img loading="lazy" src="'+p.img+'" alt="'+p.name+'" onerror="imgFallback(this)"></div>'+
     '<div class="body"><h3>'+p.name+'</h3><div class="price">Sur devis</div>'+
     '<div class="cardfoot" data-slug="'+p.slug+'">'+controls(p.slug)+'</div></div>';
 }
@@ -536,7 +578,7 @@ function add(slug){cart[slug]=cart[slug]||{name:P[slug].name,img:P[slug].img,qty
 function dec(slug){if(!cart[slug])return;cart[slug].qty--;if(cart[slug].qty<=0)delete cart[slug];persist();refreshControls(slug);refreshDetail(slug);renderCart();}
 
 /* ---- product detail (in-app, no external link) ---- */
-let prevView="products",curDetail=null;
+let prevView="products",curDetail=null,dIdx=0;
 function detailControls(slug){
   const q=cart[slug]?cart[slug].qty:0;
   if(!q) return '<button class="btn-primary" onclick="add(\''+slug+'\')"><svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M12 5v14M5 12h14"/></svg>Ajouter au panier</button>';
@@ -544,21 +586,25 @@ function detailControls(slug){
     '<button class="btn-primary" onclick="go(\'cart\')"><svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path stroke-linecap="round" stroke-linejoin="round" d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>Voir le panier</button>';
 }
 function refreshDetail(slug){if(curDetail===slug){const el=document.getElementById('d-controls');if(el)el.innerHTML=detailControls(slug);}}
-function openProduct(slug){
-  const p=P[slug];if(!p)return;
-  const a=document.querySelector('.view.active');
-  prevView=a?a.id.replace('view-',''):'products';
-  if(prevView==='detail')prevView='products';
-  curDetail=slug;
+function renderDetail(){
+  const slug=ORDER[dIdx],p=P[slug];curDetail=slug;
   const box=document.getElementById('d-imgbox');
   box.querySelectorAll('.tag').forEach(t=>t.remove());
   if(p.isNew){const t=document.createElement('span');t.className='tag new';t.textContent='Nouveau';box.appendChild(t);}
-  document.getElementById('d-img').src=p.img;
-  document.getElementById('d-img').alt=p.name;
+  const im=document.getElementById('d-img');im.src=p.img;im.alt=p.name;
   document.getElementById('d-name').textContent=p.name;
+  document.getElementById('d-counter').textContent=(dIdx+1)+' / '+ORDER.length;
   document.getElementById('d-controls').innerHTML=detailControls(slug);
-  go('detail');
+  const m=document.querySelector('main');if(m)m.scrollTop=0;
 }
+function openProduct(slug){
+  const i=ORDER.indexOf(slug);if(i<0)return;
+  const a=document.querySelector('.view.active');
+  prevView=a?a.id.replace('view-',''):'products';
+  if(prevView==='detail')prevView='products';
+  dIdx=i;renderDetail();go('detail');
+}
+function navProduct(step){dIdx=(dIdx+step+ORDER.length)%ORDER.length;renderDetail();}
 function backFromDetail(){go(prevView);}
 function removeItem(slug){delete cart[slug];persist();refreshControls(slug);renderCart();}
 function resetCart(){cart={};persist();document.querySelectorAll('.cardfoot').forEach(el=>el.innerHTML=controls(el.dataset.slug));renderCart();}
@@ -577,7 +623,7 @@ function renderCart(){
   empty.style.display='none';filled.style.display='block';
   document.getElementById('sumQty').textContent=n;
   wrap.innerHTML=items.map(([slug,it])=>
-    '<div class="citem"><div class="ci-img"><img src="'+it.img+'" alt="'+it.name+'"></div>'+
+    '<div class="citem"><div class="ci-img"><img src="'+it.img+'" alt="'+it.name+'" onerror="imgFallback(this)"></div>'+
     '<div class="ci-info"><b>'+it.name+'</b><span class="price">Sur devis</span>'+
     '<div class="ci-bottom"><div class="stepper"><button onclick="dec(\''+slug+'\')">\u2212</button><span>'+it.qty+'</span><button onclick="add(\''+slug+'\')">+</button></div>'+
     '<button class="rm" onclick="removeItem(\''+slug+'\')" aria-label="Retirer"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg></button>'+
@@ -656,6 +702,10 @@ function toast(msg){const t=document.getElementById('toast');document.getElement
 
 /* init */
 renderRails();renderGrid(allProducts);renderCats();updateBadges();renderCart();
+(function(){var box=document.getElementById('d-imgbox'),sx=0;
+  box.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;},{passive:true});
+  box.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>45)navProduct(dx<0?1:-1);});
+})();
 
 /* PWA */
 if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));}
