@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Medical Advanced Technology</title>
+<style>
+  :root{
+    --navy:#0b3a49;
+    --navy-2:#0e4d61;
+    --teal:#13a3b8;
+    --cyan:#1fc4d6;
+    --mint:#e8f7f9;
+    --ink:#0d2630;
+    --muted:#6b8089;
+    --line:#e4ecee;
+    --bg:#f4f7f8;
+    --card:#ffffff;
+    --accent:#ff6b5e;
+    --shadow:0 8px 24px rgba(11,58,73,.10);
+    --shadow-sm:0 2px 8px rgba(11,58,73,.07);
+    --r:18px;
+    --safe-b:env(safe-area-inset-bottom,0px);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+    background:#d7dee0;color:var(--ink);
+    display:flex;justify-content:center;
+  }
+  /* phone frame on desktop, full-bleed on mobile */
+  .app{
+    width:100%;max-width:440px;min-height:100vh;background:var(--bg);
+    position:relative;display:flex;flex-direction:column;overflow:hidden;
+    box-shadow:0 0 40px rgba(0,0,0,.18);
+  }
+  /* ---------- header ---------- */
+  header{
+    position:sticky;top:0;z-index:40;
+    background:linear-gradient(135deg,var(--navy) 0%,var(--navy-2) 60%,var(--teal) 140%);
+    color:#fff;padding:14px 18px 16px;
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    box-shadow:0 4px 18px rgba(11,58,73,.25);
+  }
+  .brand{display:flex;align-items:center;gap:10px;min-width:0}
+  .brand img{height:38px;width:auto;background:#fff;border-radius:9px;padding:4px 6px}
+  .brand .bt{line-height:1.05;min-width:0}
+  .brand .bt b{font-size:14px;font-weight:700;letter-spacing:.2px;display:block;white-space:nowrap}
+  .brand .bt span{font-size:10px;opacity:.8;text-transform:uppercase;letter-spacing:1.5px}
+  .hbtns{display:flex;align-items:center;gap:6px}
+  .iconbtn{
+    width:40px;height:40px;border:none;background:rgba(255,255,255,.14);
+    border-radius:12px;color:#fff;display:grid;place-items:center;cursor:pointer;position:relative;
+  }
+  .iconbtn:active{transform:scale(.94)}
+  .iconbtn svg{width:21px;height:21px}
+  .cart-badge{
+    position:absolute;top:-5px;right:-5px;background:var(--accent);color:#fff;
+    font-size:11px;font-weight:700;min-width:19px;height:19px;border-radius:10px;
+    display:grid;place-items:center;padding:0 4px;border:2px solid var(--navy-2);
+  }
+  /* ---------- search ---------- */
+  .searchwrap{padding:12px 16px 4px;background:var(--bg)}
+  .search{
+    background:#fff;border:1px solid var(--line);border-radius:14px;
+    display:flex;align-items:center;gap:9px;padding:11px 14px;box-shadow:var(--shadow-sm);
+  }
+  .search svg{width:18px;height:18px;color:var(--muted);flex:none}
+  .search input{border:none;outline:none;flex:1;font-size:14px;background:transparent;color:var(--ink)}
+  /* ---------- views ---------- */
+  main{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:88px}
+  .view{display:none;animation:fade .25s ease}
+  .view.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  /* ---------- hero ---------- */
+  .hero{
+    margin:12px 16px;border-radius:22px;overflow:hidden;position:relative;
+    background:linear-gradient(120deg,var(--navy) 0%,var(--teal) 100%);color:#fff;
+    padding:24px 22px 26px;box-shadow:var(--shadow);
+  }
+  .hero::after{content:"";position:absolute;right:-40px;top:-40px;width:170px;height:170px;
+    background:radial-gradient(circle,rgba(255,255,255,.22),transparent 70%);border-radius:50%}
+  .hero .eyebrow{font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:.85;font-weight:600}
+  .hero h1{font-size:23px;line-height:1.22;margin:10px 0 16px;font-weight:800;max-width:90%}
+  .hero a{display:inline-flex;align-items:center;gap:7px;background:#fff;color:var(--navy);
+    text-decoration:none;font-weight:700;font-size:14px;padding:11px 18px;border-radius:30px;box-shadow:0 6px 14px rgba(0,0,0,.18)}
+  .hero a svg{width:16px;height:16px}
+  /* ---------- section ---------- */
+  .section{margin:22px 0 6px}
+  .sec-head{display:flex;align-items:baseline;justify-content:space-between;padding:0 18px 12px}
+  .sec-head h2{font-size:17px;font-weight:800;color:var(--navy);letter-spacing:.2px}
+  .sec-head .pill{font-size:11px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.5px}
+  /* horizontal rail */
+  .rail{display:flex;gap:14px;overflow-x:auto;padding:2px 16px 8px;scroll-snap-type:x mandatory}
+  .rail::-webkit-scrollbar{display:none}
+  .rail .card{flex:0 0 158px;scroll-snap-align:start}
+  /* product card */
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+    overflow:hidden;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;text-decoration:none;color:inherit;
+  }
+  .card:active{transform:scale(.985)}
+  .card .imgbox{aspect-ratio:1/1;background:#fff;display:grid;place-items:center;padding:12px;position:relative}
+  .card .imgbox img{max-width:100%;max-height:100%;object-fit:contain}
+  .tag{position:absolute;top:8px;left:8px;background:var(--mint);color:var(--teal);
+    font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;padding:4px 8px;border-radius:20px}
+  .tag.new{background:#fff0ef;color:var(--accent)}
+  .card .body{padding:10px 12px 14px;display:flex;flex-direction:column;gap:9px;flex:1}
+  .card h3{font-size:13px;font-weight:600;line-height:1.3;color:var(--ink);
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:34px}
+  .addbtn{
+    margin-top:auto;border:none;background:var(--navy);color:#fff;font-weight:700;font-size:12.5px;
+    padding:9px;border-radius:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;
+  }
+  .addbtn:active{background:var(--teal)}
+  .addbtn svg{width:15px;height:15px}
+  /* grid (products view) */
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:4px 16px 8px}
+  /* ---------- service badges ---------- */
+  .services{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:6px 16px 4px}
+  .svc{background:#fff;border:1px solid var(--line);border-radius:16px;padding:15px 13px;box-shadow:var(--shadow-sm)}
+  .svc .ic{width:38px;height:38px;border-radius:11px;background:var(--mint);color:var(--teal);display:grid;place-items:center;margin-bottom:10px}
+  .svc .ic svg{width:20px;height:20px}
+  .svc b{font-size:12.5px;display:block;color:var(--navy);text-transform:capitalize}
+  .svc p{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.4}
+  /* ---------- partners ---------- */
+  .partners{display:flex;gap:14px;overflow-x:auto;padding:6px 16px 8px}
+  .partners::-webkit-scrollbar{display:none}
+  .partners a,.partners span{flex:0 0 auto;background:#fff;border:1px solid var(--line);border-radius:14px;
+    height:74px;min-width:130px;display:grid;place-items:center;padding:10px 18px;box-shadow:var(--shadow-sm)}
+  .partners img{max-height:46px;max-width:110px;object-fit:contain}
+  /* ---------- categories ---------- */
+  .cat-list{padding:14px 16px 8px}
+  .cat{background:#fff;border:1px solid var(--line);border-radius:16px;margin-bottom:12px;overflow:hidden;box-shadow:var(--shadow-sm)}
+  .cat>button{
+    width:100%;border:none;background:transparent;display:flex;align-items:center;gap:13px;
+    padding:15px 16px;cursor:pointer;text-align:left;font:inherit;
+  }
+  .cat .cic{width:42px;height:42px;border-radius:12px;flex:none;display:grid;place-items:center;
+    background:linear-gradient(135deg,var(--navy),var(--teal));color:#fff}
+  .cat .cic svg{width:22px;height:22px}
+  .cat .ct{flex:1}
+  .cat .ct b{font-size:14.5px;color:var(--navy);font-weight:700;display:block}
+  .cat .ct small{font-size:11px;color:var(--muted)}
+  .cat .chev{color:var(--muted);transition:transform .25s}
+  .cat.open .chev{transform:rotate(180deg)}
+  .cat .subs{max-height:0;overflow:hidden;transition:max-height .3s ease}
+  .cat.open .subs{max-height:340px}
+  .cat .subs ul{list-style:none;padding:0 16px 10px 71px}
+  .cat .subs li{padding:9px 0;border-top:1px solid var(--line);font-size:13px;color:var(--ink);
+    display:flex;align-items:center;justify-content:space-between}
+  .cat .subs li svg{width:15px;height:15px;color:var(--teal)}
+  /* ---------- contact ---------- */
+  .cwrap{padding:16px}
+  .chero{background:linear-gradient(135deg,var(--navy),var(--teal));color:#fff;border-radius:20px;padding:22px;box-shadow:var(--shadow);margin-bottom:16px;text-align:center}
+  .chero img{height:54px;background:#fff;border-radius:12px;padding:6px 10px;margin-bottom:12px}
+  .chero p{font-size:13px;opacity:.92;line-height:1.5}
+  .crow{background:#fff;border:1px solid var(--line);border-radius:16px;padding:15px 16px;margin-bottom:12px;
+    display:flex;align-items:center;gap:14px;text-decoration:none;color:inherit;box-shadow:var(--shadow-sm)}
+  .crow:active{background:var(--mint)}
+  .crow .ic{width:42px;height:42px;border-radius:12px;background:var(--mint);color:var(--teal);display:grid;place-items:center;flex:none}
+  .crow .ic svg{width:21px;height:21px}
+  .crow .tx b{font-size:13px;color:var(--navy);display:block;margin-bottom:2px}
+  .crow .tx span{font-size:12.5px;color:var(--muted);line-height:1.4}
+  /* ---------- bottom nav ---------- */
+  .tabbar{
+    position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:440px;z-index:50;
+    background:rgba(255,255,255,.94);backdrop-filter:blur(14px);
+    border-top:1px solid var(--line);display:flex;justify-content:space-around;
+    padding:8px 6px calc(8px + var(--safe-b));box-shadow:0 -6px 22px rgba(11,58,73,.08);
+  }
+  .tab{border:none;background:transparent;flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
+    padding:5px 0;cursor:pointer;color:var(--muted);font:inherit}
+  .tab svg{width:23px;height:23px}
+  .tab span{font-size:10.5px;font-weight:600;letter-spacing:.2px}
+  .tab.active{color:var(--teal)}
+  .tab.active svg{stroke:var(--teal)}
+  /* toast */
+  .toast{position:fixed;bottom:96px;left:50%;transform:translateX(-50%) translateY(20px);
+    background:var(--navy);color:#fff;padding:11px 20px;border-radius:30px;font-size:13px;font-weight:600;
+    opacity:0;pointer-events:none;transition:.3s;z-index:60;box-shadow:var(--shadow);white-space:nowrap}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .footnote{text-align:center;font-size:11px;color:var(--muted);padding:14px 16px 26px}
+  .footnote a{color:var(--teal);text-decoration:none}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- HEADER -->
+  <header>
+    <div class="brand">
+      <img src="https://medicaladvancedtechnology.tn/wp-content/uploads/2026/05/WhatsApp_Image_2026-05-25_at_01.22.46-removebg-preview.png" alt="MAT">
+      <div class="bt"><b>Medical Advanced</b><span>Technology</span></div>
+    </div>
+    <div class="hbtns">
+      <button class="iconbtn" onclick="go('contact')" aria-label="Appeler">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
+      </button>
+      <button class="iconbtn" aria-label="Panier">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path stroke-linecap="round" stroke-linejoin="round" d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span class="cart-badge" id="cartBadge" style="display:none">0</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="searchwrap">
+    <div class="search">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="m21 21-4.3-4.3"/></svg>
+      <input id="searchInput" placeholder="Rechercher un produit…" oninput="filterProducts(this.value)" onfocus="go('products')">
+    </div>
+  </div>
+
+  <main>
+    <!-- ===== HOME ===== -->
+    <section class="view active" id="view-home">
+      <div class="hero">
+        <div class="eyebrow">Bienvenue</div>
+        <h1>Découvrez les meilleurs produits aux meilleurs prix</h1>
+        <a href="#" onclick="go('products');return false;">Commander maintenant
+          <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+
+      <div class="section">
+        <div class="sec-head"><h2>Produits phares</h2><span class="pill" onclick="go('products')">Tout voir</span></div>
+        <div class="rail" id="featuredRail"></div>
+      </div>
+
+      <div class="section">
+        <div class="sec-head"><h2>Nouveautés</h2><span class="pill" onclick="go('products')">Tout voir</span></div>
+        <div class="rail" id="newRail"></div>
+      </div>
+
+      <div class="section">
+        <div class="sec-head"><h2>Nos garanties</h2></div>
+        <div class="services">
+          <div class="svc"><div class="ic"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg></div><b>Satisfait ou remboursé</b><p>Garantie intégrale sous 30 jours</p></div>
+          <div class="svc"><div class="ic"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><b>Assistance online</b><p>Une équipe à votre écoute 24/7</p></div>
+          <div class="svc"><div class="ic"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M1 3h15v13H1zM16 8h4l3 3v5h-7zM5.5 21a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Zm13 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"/></svg></div><b>Livraison & retour gratuits</b><p>Aucun frais caché, sans minimum</p></div>
+          <div class="svc"><div class="ic"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.7 6.3a4 4 0 0 0-5.6 5.6L3 18v3h3l6.1-6.1a4 4 0 0 0 5.6-5.6l-2.5 2.5-2.1-2.1z"/></svg></div><b>Service après-vente</b><p>Un accompagnement au-delà de l'achat</p></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="sec-head"><h2>Nos partenaires</h2></div>
+        <div class="partners">
+          <span><img src="https://medicaladvancedtechnology.tn/wp-content/uploads/2026/04/images-1.png" alt="Pinidi Dental Co"></span>
+          <a href="https://lemedinst.com/" target="_blank" rel="noopener"><img src="https://medicaladvancedtechnology.tn/wp-content/uploads/2026/04/images-300x123.png" alt="LE MED instruments"></a>
+          <span><img src="https://medicaladvancedtechnology.tn/wp-content/uploads/2026/04/images-1.png" alt="Pinidi Dental Co"></span>
+        </div>
+      </div>
+
+      <p class="footnote">© 2026 Medical Advanced Technology · Sousse, Tunisie<br>Développé par <a href="https://oursysdev.com" target="_blank" rel="noopener">Oursys</a></p>
+    </section>
+
+    <!-- ===== PRODUCTS ===== -->
+    <section class="view" id="view-products">
+      <div class="sec-head" style="padding-top:16px"><h2 id="prodTitle">Tous les produits</h2><span class="pill" id="prodCount"></span></div>
+      <div class="grid" id="productGrid"></div>
+      <p class="footnote" id="noResults" style="display:none">Aucun produit trouvé.</p>
+    </section>
+
+    <!-- ===== CATEGORIES ===== -->
+    <section class="view" id="view-cats">
+      <div class="sec-head" style="padding-top:16px"><h2>Nos catégories</h2></div>
+      <div class="cat-list" id="catList"></div>
+    </section>
+
+    <!-- ===== CONTACT ===== -->
+    <section class="view" id="view-contact">
+      <div class="cwrap">
+        <div class="chero">
+          <img src="https://medicaladvancedtechnology.tn/wp-content/uploads/2026/04/Design_sans_titre__1_-removebg-preview-1.png" alt="MAT">
+          <p>Solutions avancées en équipements médicaux.</p>
+        </div>
+        <a class="crow" href="tel:73321860">
+          <div class="ic"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/></svg></div>
+          <div class="tx"><b>Téléphone</b><span>73 321 860</span></div>
+        </a>
+        <a class="crow" href="mailto:medicaladvancedtechnology@yahoo.fr">
+          <div class="ic"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path stroke-linecap="round" d="m2 7 10 6 10-6"/></svg></div>
+          <div class="tx"><b>Email</b><span>medicaladvancedtechnology@yahoo.fr</span></div>
+        </a>
+        <a class="crow" href="https://maps.google.com/?q=Zone+Industrielle+Sidi+Abdelhamid+Sousse+Tunisie" target="_blank" rel="noopener">
+          <div class="ic"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div class="tx"><b>Adresse</b><span>Zone Industrielle, Sidi Abd Lahmid, Rue Oxygène, Sousse, Tunisie</span></div>
+        </a>
+        <a class="crow" href="https://www.facebook.com/share/1HEprLECkc/?mibextid=wwXIfr" target="_blank" rel="noopener">
+          <div class="ic"><svg fill="currentColor" viewBox="0 0 24 24"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12Z"/></svg></div>
+          <div class="tx"><b>Facebook</b><span>Suivez-nous</span></div>
+        </a>
+        <p class="footnote">© 2026 Medical Advanced Technology<br>Développé par <a href="https://oursysdev.com" target="_blank" rel="noopener">Oursys</a></p>
+      </div>
+    </section>
+  </main>
+
+  <!-- BOTTOM NAV -->
+  <nav class="tabbar">
+    <button class="tab active" data-v="home" onclick="go('home')">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 22V12h6v10"/></svg>
+      <span>Accueil</span>
+    </button>
+    <button class="tab" data-v="products" onclick="go('products')">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.59 13.41 13.42 20.6a2 2 0 0 1-2.83 0l-7.59-7.59a2 2 0 0 1-.58-1.42V4a2 2 0 0 1 2-2h7.59a2 2 0 0 1 1.41.59l7.17 7.17a2 2 0 0 1 0 2.83Z"/><circle cx="7" cy="7" r="1.4"/></svg>
+      <span>Produits</span>
+    </button>
+    <button class="tab" data-v="cats" onclick="go('cats')">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+      <span>Catégories</span>
+    </button>
+    <button class="tab" data-v="contact" onclick="go('contact')">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
+      <span>Contact</span>
+    </button>
+  </nav>
+
+  <div class="toast" id="toast">Ajouté au panier</div>
+</div>
+
+<script>
+const BASE="https://medicaladvancedtechnology.tn/?product=";
+const IMG="https://medicaladvancedtechnology.tn/wp-content/uploads/";
+
+const featured=[
+  ["Stainless Steel Disc","stainless-steel-disc","2026/06/Capture-decran-2026-06-11-142435.png"],
+  ["Polishing Brush 01My25","polishing-brush-01my25","2026/06/01My25.png"],
+  ["Silicon Polisher For Ceramics, Composite","silicon-polisher-for-ceramicscomposite","2026/06/Cr103F.jpg"],
+  ["Diamond Bur Round End Core","diamond-bur-round-end-core","2026/06/198-016M-scaled-1.jpg"],
+  ["Alluminum Blocks, Sterilisable for Root canal files ×18","alluminum-blocks-sterilisable-for-root-canal-files-18","2026/06/Capture-decran-2026-06-09-162116.png"],
+  ["Cleaning and debonding burs","cleaning-and-debonding-burs","2026/06/pc00-pc02.png"],
+  ["Tungsten Carbide Cutter G060FE","tungsten-carbide-cutter-g060fe","2026/06/G060FE.jpg"],
+  ["Tungsten Carbide Cutter F060CE","tungsten-carbide-cutter-f060ce","2026/06/F060CE.jpg"],
+  ["Tungsten Carbide Cutter L040CE","tungsten-carbide-cutter-l040ce","2026/06/L040CE.jpg"],
+  ["Interproximal Enamel Reduction (IPR) for Ortho","interproximal-enamel-reduction-ipr-for-ortho","2026/06/Capture-decran-2026-06-09-232908.png"],
+  ["Diamond Bur Flame","diamond-bur-flame","2026/06/250-012M-scaled-1.jpg"],
+  ["Siège médecin/assistant anatomique ASSIST PLUS","siege-medecin-assistant-anatomique-assist-plus","2026/06/assist-plus.jpg"],
+  ["Middle style Reverse Headgears","middle-style-reverse-headgears","2026/05/Capture-decran-2026-05-25-102229.png"],
+  ["Tungsten Carbide Cutter L070XCE","tungsten-carbide-cutter-l070xce","2026/06/L070XCE.jpg"],
+  ["Diamond Bur Cylinder","diamond-bur-cylinder","2026/06/109-010M-scaled-1.jpg"],
+  ["Tungsten Carbide Bur Cylinder, Plain Cut","tungsten-carbide-bur-cylinder-plain-cut","2026/06/FG-58-2-scaled-1.jpg"]
+];
+const novelties=[
+  ["Polishing Brush 01M22","polishing-brush-01m22","2026/06/01M22.png"],
+  ["Tungsten Carbide Cutter L040FE","tungsten-carbide-cutter-l040fe","2026/06/L040FE.jpg"],
+  ["Composite Finish and Polish RA","composite-finish-and-polish-ra","2026/06/Capture-decran-2026-06-10-142747.png"],
+  ["Diamond Ortho-Strip Polishing","diamond-ortho-strip-polishing","2026/06/OS10-scaled-1.jpg"],
+  ["Thin, 0.20 × 22mm Double sided Fine Grit","thin0-20-x-22mm-double-sided-fine-grit","2026/06/A22D20.jpg"]
+];
+
+const categories=[
+  {n:"Implantologie",d:"3 sous-catégories",subs:["Biomatériaux (Substituts osseux, Membranes)","Implants & Accastillage","Moteurs d'implantologie & Trousses"]},
+  {n:"Consommables & Matériaux",d:"4 sous-catégories",subs:["Ciments & Adhésifs","Composites & Restauration","Matériaux d'empreinte","Usage unique (Aiguilles, Bavoirs, Gobelets)"]},
+  {n:"Hygiène & stérilisation",d:"4 sous-catégories",subs:["Autoclaves & Stérilisateurs","Bacs à ultrasons","Désinfection (Surfaces, Instruments)","Équipement de Protection Individuelle"]},
+  {n:"Instrumentation & Examens Clinique",d:"3 sous-catégories",subs:["Instrumentation spécifique (Endodontie, Parodontie)","Instruments à main (Daviers, Sondes, Précelles)","Instruments Rotatifs (Turbines, Contre-angles)"]},
+  {n:"Orthodontie",d:"4 sous-catégories",subs:["Brackets, bagues & Arcs","Élastomérique & Accessoires","Pinces & Instrumentation Ortho","Collage & scellement"]},
+  {n:"Solutions Digitales & Haute Technologie",d:"5 sous-catégories",subs:["Aligneurs Transparents","Impression 3D & Résines","Logiciels & Imagerie 3D","Scanners Intra-oraux","Usinage & CAD/CAM"]},
+  {n:"Équipement & Aménagement",d:"4 sous-catégories",subs:["Compresseurs & Aspiration","Mobilier clinique","Radiologie (Panoramique, CBCT)","Unités de soins (fauteuils dentaires)"]}
+];
+
+const allProducts=[...novelties.map(p=>({...mk(p),isNew:true})), ...featured.map(p=>({...mk(p),isNew:false}))];
+function mk(p){return {name:p[0],slug:p[1],img:IMG+p[2]};}
+
+function cardHTML(p){
+  return `<a class="card" href="${BASE+p.slug}" target="_blank" rel="noopener">
+    <div class="imgbox">${p.isNew?'<span class="tag new">Nouveau</span>':''}<img loading="lazy" src="${p.img}" alt="${p.name}"></div>
+    <div class="body"><h3>${p.name}</h3>
+      <button class="addbtn" onclick="event.preventDefault();addCart(event)">
+        <svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M12 5v14M5 12h14"/></svg>Ajouter</button>
+    </div></a>`;
+}
+
+function renderRails(){
+  document.getElementById('featuredRail').innerHTML=featured.map(p=>cardHTML({...mk(p),isNew:false})).join('');
+  document.getElementById('newRail').innerHTML=novelties.map(p=>cardHTML({...mk(p),isNew:true})).join('');
+}
+function renderGrid(list){
+  const g=document.getElementById('productGrid');
+  g.innerHTML=list.map(cardHTML).join('');
+  document.getElementById('prodCount').textContent=list.length+' articles';
+  document.getElementById('noResults').style.display=list.length?'none':'block';
+}
+function renderCats(){
+  document.getElementById('catList').innerHTML=categories.map((c,i)=>`
+    <div class="cat" id="cat${i}">
+      <button onclick="toggleCat(${i})">
+        <span class="cic"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7l9-4 9 4-9 4-9-4Zm0 0v10l9 4 9-4V7"/></svg></span>
+        <span class="ct"><b>${c.n}</b><small>${c.d}</small></span>
+        <span class="chev"><svg fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path stroke-linecap="round" d="m6 9 6 6 6-6"/></svg></span>
+      </button>
+      <div class="subs"><ul>${c.subs.map(s=>`<li>${s}<svg fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path stroke-linecap="round" d="m9 6 6 6-6 6"/></svg></li>`).join('')}</ul></div>
+    </div>`).join('');
+}
+function toggleCat(i){document.getElementById('cat'+i).classList.toggle('open');}
+
+function filterProducts(q){
+  q=q.trim().toLowerCase();
+  document.getElementById('prodTitle').textContent=q?'Résultats':'Tous les produits';
+  renderGrid(q?allProducts.filter(p=>p.name.toLowerCase().includes(q)):allProducts);
+}
+
+function go(v){
+  document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));
+  document.getElementById('view-'+v).classList.add('active');
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.v===v));
+  document.querySelector('main').scrollTop=0;
+}
+
+let cart=0;
+function addCart(e){
+  cart++;
+  const b=document.getElementById('cartBadge');
+  b.textContent=cart;b.style.display='grid';
+  const t=document.getElementById('toast');
+  t.classList.add('show');clearTimeout(window._tt);
+  window._tt=setTimeout(()=>t.classList.remove('show'),1300);
+}
+
+renderRails();renderGrid(allProducts);renderCats();
+</script>
+</body>
+</html>
