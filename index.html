@@ -71,6 +71,21 @@
   .hero a{display:inline-flex;align-items:center;gap:7px;background:#fff;color:var(--navy);text-decoration:none;
     font-weight:700;font-size:14px;padding:11px 18px;border-radius:30px;box-shadow:0 6px 14px rgba(0,0,0,.18)}
   .hero a svg{width:16px;height:16px}
+  /* rotating promo banner */
+  .banner{position:relative;margin:12px 16px;border-radius:22px;overflow:hidden;box-shadow:var(--shadow)}
+  .bslides{display:flex;transition:transform .5s ease;will-change:transform}
+  .bslide{flex:0 0 100%;width:100%;background:linear-gradient(120deg,var(--navy) 0%,var(--teal) 100%);color:#fff;padding:24px 22px 34px;min-height:158px;display:flex;flex-direction:column;justify-content:center;position:relative}
+  .bslide.ev{background:linear-gradient(120deg,#4a2a7a 0%,#13a3b8 120%)}
+  .bslide.offer{background:linear-gradient(120deg,#0b3a49 0%,#1aa66b 120%)}
+  .bslide::after{content:"";position:absolute;right:-40px;top:-40px;width:170px;height:170px;background:radial-gradient(circle,rgba(255,255,255,.20),transparent 70%);border-radius:50%}
+  .bslide .eyebrow{font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:.85;font-weight:700;position:relative;z-index:1}
+  .bslide h1{font-size:21px;line-height:1.22;margin:9px 0 6px;font-weight:800;max-width:92%;position:relative;z-index:1}
+  .bslide p{font-size:12.5px;opacity:.9;line-height:1.4;margin-bottom:14px;max-width:92%;position:relative;z-index:1}
+  .bslide .bcta{display:inline-flex;align-items:center;gap:7px;background:#fff;color:var(--navy);border:none;font-weight:700;font-size:13.5px;padding:10px 17px;border-radius:30px;cursor:pointer;align-self:flex-start;box-shadow:0 6px 14px rgba(0,0,0,.18);position:relative;z-index:1;margin-top:4px}
+  .bslide .bcta svg{width:15px;height:15px}
+  .bdots{position:absolute;bottom:11px;left:0;right:0;display:flex;justify-content:center;gap:6px;z-index:2}
+  .bdot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.5);cursor:pointer;transition:.25s}
+  .bdot.on{background:#fff;width:18px;border-radius:4px}
   .section{margin:22px 0 6px}
   .sec-head{display:flex;align-items:baseline;justify-content:space-between;padding:0 18px 12px}
   .sec-head h2{font-size:17px;font-weight:800;color:var(--navy);letter-spacing:.2px}
@@ -283,14 +298,12 @@
   <main>
     <!-- HOME -->
     <section class="view active" id="view-home">
-      <div class="hero">
-        <div class="eyebrow">Bienvenue</div>
-        <h1>Découvrez les meilleurs produits aux meilleurs prix</h1>
-        <a href="#" onclick="go('products');return false;">Commander maintenant
-          <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <div class="banner" id="banner">
+        <div class="bslides" id="bSlides"></div>
+        <div class="bdots" id="bDots"></div>
       </div>
-      <div class="section"><div class="sec-head"><h2>Produits phares</h2><span class="pill" onclick="go('products')">Tout voir</span></div><div class="rail" id="featuredRail"></div></div>
-      <div class="section"><div class="sec-head"><h2>Nouveautés</h2><span class="pill" onclick="go('products')">Tout voir</span></div><div class="rail" id="newRail"></div></div>
+      <div class="section"><div class="sec-head"><h2>Produits phares</h2><span class="pill" onclick="go('products')">Tout voir</span></div><div class="grid" id="featuredRail"></div></div>
+      <div class="section"><div class="sec-head"><h2>Nouveautés</h2><span class="pill" onclick="go('products')">Tout voir</span></div><div class="grid" id="newRail"></div></div>
       <div class="section"><div class="sec-head"><h2>Nos garanties</h2></div>
         <div class="services">
           <div class="svc"><div class="ic"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg></div><b>Satisfait ou remboursé</b><p>Garantie intégrale sous 30 jours</p></div>
@@ -410,6 +423,10 @@
         <h3><span class="n">4</span> Récapitulatif</h3>
         <div class="recap" id="recap"></div>
       </div>
+      <div style="padding:0 16px 8px">
+        <button class="btn-primary" onclick="placeOrder()">Confirmer la commande
+          <svg fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg></button>
+      </div>
     </section>
 
     <!-- CONFIRMATION -->
@@ -459,11 +476,6 @@
       </div>
     </section>
   </main>
-
-  <div class="checkbar" id="checkbar" style="display:none">
-    <button class="btn-primary" onclick="placeOrder()">Confirmer la commande
-      <svg fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg></button>
-  </div>
 
   <nav class="tabbar" id="tabbar">
     <button class="tab active" data-v="home" onclick="go('home')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 22V12h6v10"/></svg><span>Accueil</span></button>
@@ -568,7 +580,7 @@ function cardHTML(p){
 function refreshControls(slug){document.querySelectorAll('.cardfoot[data-slug="'+slug+'"]').forEach(el=>el.innerHTML=controls(slug));}
 
 function renderRails(){
-  document.getElementById('featuredRail').innerHTML=featured.map(p=>cardHTML({...mk(p),isNew:false})).join('');
+  document.getElementById('featuredRail').innerHTML=featured.slice(0,6).map(p=>cardHTML({...mk(p),isNew:false})).join('');
   document.getElementById('newRail').innerHTML=novelties.map(p=>cardHTML({...mk(p),isNew:true})).join('');
 }
 function renderGrid(list){
@@ -707,7 +719,6 @@ function go(v){
   document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));
   document.getElementById('view-'+v).classList.add('active');
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.v===v));
-  document.getElementById('checkbar').style.display=(v==='checkout')?'block':'none';
   if(v==='cart')renderCart();
   if(v==='checkout'){if(!totalQty()){go('cart');return;}renderCheckout();}
   document.querySelector('main').scrollTop=0;window.scrollTo(0,0);
@@ -717,7 +728,29 @@ let _tt;
 function toast(msg){const t=document.getElementById('toast');document.getElementById('toastMsg').textContent=msg;t.classList.add('show');clearTimeout(_tt);_tt=setTimeout(()=>t.classList.remove('show'),2200);}
 
 /* init */
-renderRails();renderGrid(allProducts);renderCats();updateBadges();renderCart();
+const BANNERS=[
+  {cls:'ev',tag:'Événement',title:'Bloom Events — Hammamet',sub:'Retrouvez Medical Advanced Technology à l\u2019événement Bloom de Hammamet.',cta:'Nous contacter',act:"go('contact')"},
+  {cls:'',tag:'Bienvenue',title:'Les meilleurs produits aux meilleurs prix',sub:'Tout le matériel médical & dentaire, livré partout en Tunisie.',cta:'Commander maintenant',act:"go('products')"},
+  {cls:'offer',tag:'Offre',title:'Livraison gratuite partout en Tunisie',sub:'Sans minimum d\u2019achat. Satisfait ou remboursé sous 30 jours.',cta:'Voir les produits',act:"go('products')"}
+];
+let bi=0,bTimer=null;
+function renderBanner(){
+  document.getElementById('bSlides').innerHTML=BANNERS.map(function(b){
+    return '<div class="bslide '+b.cls+'"><div class="eyebrow">'+b.tag+'</div><h1>'+b.title+'</h1>'+(b.sub?'<p>'+b.sub+'</p>':'')+
+      '<div><button class="bcta" onclick="'+b.act+'">'+b.cta+' <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></svg></button></div></div>';
+  }).join('');
+  document.getElementById('bDots').innerHTML=BANNERS.map(function(_,i){return '<span class="bdot'+(i===0?' on':'')+'" onclick="goBanner('+i+')"></span>';}).join('');
+  startBanner();
+}
+function setBanner(i){bi=(i+BANNERS.length)%BANNERS.length;document.getElementById('bSlides').style.transform='translateX(-'+(bi*100)+'%)';document.querySelectorAll('.bdot').forEach(function(d,k){d.classList.toggle('on',k===bi);});}
+function startBanner(){clearInterval(bTimer);bTimer=setInterval(function(){setBanner(bi+1);},6000);}
+function goBanner(i){setBanner(i);startBanner();}
+
+renderRails();renderGrid(allProducts);renderCats();updateBadges();renderCart();renderBanner();
+(function(){var b=document.getElementById('banner'),sx=0;
+  b.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;clearInterval(bTimer);},{passive:true});
+  b.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>40)setBanner(bi+(dx<0?1:-1));startBanner();});
+})();
 (function(){var box=document.getElementById('d-imgbox'),sx=0;
   box.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;},{passive:true});
   box.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>45)navProduct(dx<0?1:-1);});
