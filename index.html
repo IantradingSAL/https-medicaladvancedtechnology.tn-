@@ -115,7 +115,8 @@
     border-radius:8px;cursor:pointer;display:grid;place-items:center;box-shadow:var(--shadow-sm)}
   .stepper button:active{background:var(--teal);color:#fff}
   .stepper span{font-weight:800;color:var(--navy);font-size:14px}
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:4px 16px 8px}
+  .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;padding:4px 16px 8px}
+  .grid .card{min-width:0;width:100%}
   .services{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:6px 16px 4px}
   .svc{background:#fff;border:1px solid var(--line);border-radius:16px;padding:15px 13px;box-shadow:var(--shadow-sm)}
   .svc .ic{width:38px;height:38px;border-radius:11px;background:var(--mint);color:var(--teal);display:grid;place-items:center;margin-bottom:10px}
@@ -244,6 +245,49 @@
   .dswipe{text-align:center;font-size:11px;color:var(--muted);margin:-4px 0 14px}
   .simwrap{margin-top:6px;border-top:1px solid var(--line);padding-top:16px}
   .simh{font-size:15px;font-weight:800;color:var(--navy);padding:0 20px 12px}
+  /* admin */
+  .ost{font-size:11px;font-weight:700;padding:3px 11px;border-radius:20px;background:#fff3e0;color:#c77700;display:inline-block}
+  .ost.ok{background:#e7f7ef;color:var(--ok)}
+  .ordcard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px;box-shadow:var(--shadow-sm);cursor:pointer}
+  .ordcard:active{background:var(--mint)}
+  .oc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
+  .oc-top b{font-size:14px;color:var(--navy)}
+  .oc-sub{font-size:13px;color:var(--ink)}
+  .oc-meta{font-size:11.5px;color:var(--muted);margin-top:3px}
+  .pline{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}
+  .pline:last-child{border:none}
+  .pl-n{font-size:13px;color:var(--ink);flex:1}
+  .pl-p{display:flex;align-items:center;gap:6px;flex:none}
+  .pl-p input{width:92px;border:1px solid var(--line);border-radius:9px;padding:8px;font-size:13px;text-align:right;color:var(--ink)}
+  .pl-p span{font-size:11px;color:var(--muted)}
+  .recap .rl.tot{border:none;border-top:1px dashed var(--line);margin-top:4px;padding-top:11px;font-weight:800;color:var(--navy);font-size:15px}
+  /* invoice */
+  .invoice{background:#fff;margin:12px 16px;border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:var(--shadow-sm);color:#0d2630}
+  .inv-head{display:flex;justify-content:space-between;gap:12px;border-bottom:2px solid var(--navy);padding-bottom:12px;margin-bottom:14px}
+  .inv-co{font-size:16px;font-weight:800;color:var(--navy)}
+  .inv-sm{font-size:10.5px;color:var(--muted);margin-top:4px;line-height:1.45}
+  .inv-tag{font-size:12px;font-weight:800;color:var(--teal);text-align:right;white-space:nowrap}
+  .inv-meta{display:flex;justify-content:space-between;gap:12px;font-size:11.5px;margin-bottom:14px}
+  .inv-meta b{color:var(--navy);font-size:13px}
+  .inv-meta span{color:var(--muted);line-height:1.45}
+  .inv-meta .r{text-align:right}
+  .inv-tbl{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:14px}
+  .inv-tbl th{background:var(--mint);color:var(--navy);text-align:left;padding:8px;font-size:11px}
+  .inv-tbl td{padding:8px;border-bottom:1px solid var(--line)}
+  .inv-tbl .c{text-align:center}.inv-tbl .r{text-align:right}
+  .inv-tot .rl{display:flex;justify-content:space-between;font-size:12.5px;padding:5px 0;color:var(--muted)}
+  .inv-tot .rl span:last-child{color:var(--ink);font-weight:600}
+  .inv-tot .rl.tot{border-top:1px dashed var(--line);margin-top:4px;padding-top:10px;color:var(--navy);font-weight:800;font-size:14px}
+  .inv-foot{font-size:11px;color:var(--muted);margin-top:14px;border-top:1px solid var(--line);padding-top:10px;line-height:1.5}
+  @media print{
+    body{background:#fff}
+    .app{max-width:none;box-shadow:none}
+    header,.searchwrap,.install,.tabbar,.toast,.noprint{display:none!important}
+    main{padding:0!important;overflow:visible!important}
+    .view{display:none!important}
+    #view-invoice{display:block!important}
+    .invoice{margin:0;border:none;box-shadow:none}
+  }
   /* tab bar */
   .tabbar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:440px;z-index:50;
     background:rgba(255,255,255,.94);backdrop-filter:blur(14px);border-top:1px solid var(--line);display:flex;
@@ -473,6 +517,51 @@
           <div class="tx"><b>Facebook</b><span>Suivez-nous</span></div>
         </a>
         <p class="footnote">&copy; 2026 Medical Advanced Technology<br>Tous droits réservés &mdash; Medical Advanced Technology</p>
+        <button class="btn-ghost" style="margin-top:2px" onclick="go('admin')">Espace administrateur</button>
+      </div>
+    </section>
+
+    <!-- ADMIN -->
+    <section class="view" id="view-admin">
+      <div class="pghead"><button class="back" onclick="go('contact')" aria-label="Retour"><svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m15 18-6-6 6-6"/></svg></button><div><h2>Espace admin</h2><small>Gestion des commandes</small></div></div>
+      <div id="adminLogin" style="padding:16px">
+        <div class="block"><h3>Connexion</h3>
+          <div class="field"><label>Code administrateur</label><input id="adminPin" type="password" inputmode="numeric" placeholder="••••" onkeydown="if(event.key==='Enter')adminLogin()"></div>
+          <button class="btn-primary" onclick="adminLogin()">Se connecter</button>
+        </div>
+      </div>
+      <div id="adminPanel" style="display:none">
+        <div class="sec-head" style="padding-top:8px"><h2>Commandes reçues</h2><span class="pill" onclick="renderOrders()">Actualiser</span></div>
+        <div id="orderList" style="padding:0 16px 8px"></div>
+      </div>
+    </section>
+
+    <!-- ADMIN ORDER -->
+    <section class="view" id="view-order">
+      <div class="pghead"><button class="back" onclick="go('admin')" aria-label="Retour"><svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m15 18-6-6 6-6"/></svg></button><div><h2 id="odTitle">Commande</h2><small>Détails & validation</small></div></div>
+      <div style="padding:0 16px 8px">
+        <div id="odStatus" style="margin-bottom:12px"></div>
+        <div class="block"><h3>Client & livraison</h3><div class="recap" id="odClient"></div></div>
+        <div class="block"><h3>Articles & prix</h3><div id="odLines"></div>
+          <div class="row2" style="margin-top:12px">
+            <div class="field"><label>TVA (%)</label><input id="odTva" type="number" min="0" step="1" value="19" oninput="recalc()"></div>
+            <div class="field"><label>Livraison (TND)</label><input id="odShip" type="number" min="0" step="0.001" value="0" oninput="recalc()"></div>
+          </div>
+          <div class="recap" id="odTotals"></div>
+        </div>
+        <button class="btn-primary" onclick="validateOrder()" style="margin-bottom:10px"><svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m5 13 4 4L19 7"/></svg>Valider la commande</button>
+        <button class="btn-ghost" onclick="openInvoice()" style="margin-bottom:10px"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path stroke-linecap="round" stroke-linejoin="round" d="M14 2v6h6M8 13h8M8 17h6"/></svg>Générer / voir la facture</button>
+        <button class="btn-primary btn-wa" onclick="orderWhatsApp()"><svg fill="currentColor" viewBox="0 0 24 24"><path d="M17.5 14.4c-.3-.2-1.7-.8-2-.9-.3-.1-.5-.2-.7.2s-.8.9-.9 1.1c-.2.2-.3.2-.6.1-1.7-.9-2.8-1.5-4-3.4-.3-.5.3-.5.8-1.6.1-.2 0-.4 0-.5 0-.2-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.3 5.2 4.6 1.9.8 2.7.9 3.6.8.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3ZM12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Z"/></svg>Envoyer au client (WhatsApp)</button>
+      </div>
+    </section>
+
+    <!-- INVOICE -->
+    <section class="view" id="view-invoice">
+      <div class="pghead noprint"><button class="back" onclick="go('order')" aria-label="Retour"><svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m15 18-6-6 6-6"/></svg></button><div><h2>Facture</h2><small>Aperçu</small></div></div>
+      <div class="invoice" id="invoiceBox"></div>
+      <div style="padding:8px 16px" class="noprint">
+        <button class="btn-primary" onclick="printInvoice()" style="margin-bottom:10px"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v8H6z"/></svg>Imprimer / Enregistrer PDF</button>
+        <button class="btn-primary btn-wa" onclick="invoiceWhatsApp()"><svg fill="currentColor" viewBox="0 0 24 24"><path d="M17.5 14.4c-.3-.2-1.7-.8-2-.9-.3-.1-.5-.2-.7.2s-.8.9-.9 1.1c-.2.2-.3.2-.6.1-1.7-.9-2.8-1.5-4-3.4-.3-.5.3-.5.8-1.6.1-.2 0-.4 0-.5 0-.2-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.3 5.2 4.6 1.9.8 2.7.9 3.6.8.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3ZM12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Z"/></svg>Envoyer la facture (WhatsApp)</button>
       </div>
     </section>
   </main>
@@ -564,6 +653,10 @@ function similar(slug,n){
 let cart=store.get("mat_cart")||{};
 let selShip=store.get("mat_ship")||"standard";
 let selPay=store.get("mat_pay")||"cod";
+let orders=store.get("mat_orders")||[];
+function saveOrders(){store.set("mat_orders",orders);}
+const ADMIN_PIN="1234";
+let authed=false,curOrder=null;
 
 /* ---- product cards ---- */
 function controls(slug){
@@ -693,8 +786,12 @@ function placeOrder(){
   if(!ok){toast('Complétez les champs requis');return;}
   const ref='MAT-'+new Date().toISOString().slice(2,10).replace(/-/g,'')+'-'+Math.floor(1000+Math.random()*9000);
   const sh=SHIPPING.find(s=>s.id===selShip),pa=PAYMENT.find(p=>p.id===selPay);
-  lastOrder={ref,name,phone,email:val('i-email'),addr,city,zip:val('i-zip'),notes:val('i-notes'),
-    ship:sh.t+' ('+sh.amt+')',pay:pa.t,items:Object.values(cart).map(i=>i.qty+' \u00d7 '+i.name)};
+  lastOrder={ref,invNo:ref.replace('MAT','FACT'),ts:Date.now(),status:'pending',
+    name,phone,email:val('i-email'),addr,city,zip:val('i-zip'),notes:val('i-notes'),
+    ship:sh.t+' ('+sh.amt+')',shipId:selShip,pay:pa.t,payId:selPay,
+    items:Object.values(cart).map(i=>i.qty+' \u00d7 '+i.name),
+    lines:Object.values(cart).map(i=>({name:i.name,qty:i.qty,price:0})),tva:19,shipCost:0};
+  orders.unshift(lastOrder);saveOrders();
   store.set("mat_last_order",lastOrder);
   document.getElementById('orderRef').textContent=ref;
   const body=orderText(lastOrder);
@@ -720,6 +817,7 @@ function go(v){
   document.getElementById('view-'+v).classList.add('active');
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.v===v));
   if(v==='cart')renderCart();
+  if(v==='admin')showAdmin();
   if(v==='checkout'){if(!totalQty()){go('cart');return;}renderCheckout();}
   document.querySelector('main').scrollTop=0;window.scrollTo(0,0);
 }
@@ -755,6 +853,77 @@ renderRails();renderGrid(allProducts);renderCats();updateBadges();renderCart();r
   box.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;},{passive:true});
   box.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>45)navProduct(dx<0?1:-1);});
 })();
+
+/* ---- admin: orders, validation, invoicing ---- */
+function adminLogin(){var p=document.getElementById('adminPin').value.trim();if(p===ADMIN_PIN){authed=true;document.getElementById('adminPin').value='';showAdmin();}else{toast('Code incorrect');}}
+function showAdmin(){document.getElementById('adminLogin').style.display=authed?'none':'block';document.getElementById('adminPanel').style.display=authed?'block':'none';if(authed)renderOrders();}
+function fmtDate(ts){try{return new Date(ts).toLocaleDateString('fr-FR');}catch(e){return '';}}
+function money(v){return (Math.round((v||0)*1000)/1000).toFixed(3)+' TND';}
+function findOrder(ref){return orders.filter(function(o){return o.ref===ref;})[0];}
+function waNum(phone){var d=(phone||'').replace(/\D/g,'');if(d.indexOf('216')!==0){d=(d.length<=8)?'216'+d:'216'+d.slice(-8);}return d;}
+function renderOrders(){
+  var wrap=document.getElementById('orderList');
+  if(!orders.length){wrap.innerHTML='<div class="empty"><b>Aucune commande</b><p>Les commandes passées sur cet appareil apparaîtront ici.</p></div>';return;}
+  wrap.innerHTML=orders.map(function(o){
+    var n=o.lines.reduce(function(s,l){return s+l.qty;},0);
+    var st=o.status==='validated'?'<span class="ost ok">Validée</span>':'<span class="ost">En attente</span>';
+    return '<div class="ordcard" onclick="openOrder(\''+o.ref+'\')"><div class="oc-top"><b>'+o.ref+'</b>'+st+'</div><div class="oc-sub">'+o.name+' · '+o.city+'</div><div class="oc-meta">'+n+' article(s) · '+fmtDate(o.ts)+'</div></div>';
+  }).join('');
+}
+function openOrder(ref){
+  curOrder=findOrder(ref);if(!curOrder)return;var o=curOrder;
+  document.getElementById('odTitle').textContent=o.ref;
+  document.getElementById('odStatus').innerHTML=o.status==='validated'?'<span class="ost ok">Validée</span>':'<span class="ost">En attente</span>';
+  document.getElementById('odClient').innerHTML=
+    '<div class="rl"><span>Client</span><span>'+o.name+'</span></div>'+
+    '<div class="rl"><span>Téléphone</span><span>'+o.phone+'</span></div>'+
+    (o.email?'<div class="rl"><span>Email</span><span>'+o.email+'</span></div>':'')+
+    '<div class="rl"><span>Adresse</span><span>'+o.addr+', '+o.city+(o.zip?' '+o.zip:'')+'</span></div>'+
+    '<div class="rl"><span>Livraison</span><span>'+o.ship+'</span></div>'+
+    '<div class="rl"><span>Paiement</span><span>'+o.pay+'</span></div>'+
+    (o.notes?'<div class="rl"><span>Notes</span><span>'+o.notes+'</span></div>':'');
+  document.getElementById('odLines').innerHTML=o.lines.map(function(l,i){
+    return '<div class="pline"><div class="pl-n">'+l.qty+' × '+l.name+'</div><div class="pl-p"><input type="number" min="0" step="0.001" value="'+(l.price||0)+'" id="pl'+i+'" oninput="recalc()"><span>TND</span></div></div>';
+  }).join('');
+  document.getElementById('odTva').value=(o.tva!=null?o.tva:19);
+  document.getElementById('odShip').value=(o.shipCost||0);
+  recalc();go('order');
+}
+function recalc(){
+  if(!curOrder)return;var o=curOrder,ht=0;
+  o.lines.forEach(function(l,i){var el=document.getElementById('pl'+i);var v=el?parseFloat(el.value)||0:(l.price||0);l.price=v;ht+=v*l.qty;});
+  o.tva=parseFloat(document.getElementById('odTva').value)||0;
+  o.shipCost=parseFloat(document.getElementById('odShip').value)||0;
+  var tvaAmt=ht*o.tva/100, ttc=ht+tvaAmt+o.shipCost;
+  document.getElementById('odTotals').innerHTML=
+    '<div class="rl"><span>Total HT</span><span>'+money(ht)+'</span></div>'+
+    '<div class="rl"><span>TVA ('+o.tva+'%)</span><span>'+money(tvaAmt)+'</span></div>'+
+    '<div class="rl"><span>Livraison</span><span>'+money(o.shipCost)+'</span></div>'+
+    '<div class="rl tot"><span>Total TTC</span><span>'+money(ttc)+'</span></div>';
+}
+function validateOrder(){if(!curOrder)return;recalc();curOrder.status='validated';saveOrders();document.getElementById('odStatus').innerHTML='<span class="ost ok">Validée</span>';toast('Commande validée');}
+function invoiceText(o){
+  var ht=0;o.lines.forEach(function(l){ht+=(l.price||0)*l.qty;});
+  var tvaAmt=ht*(o.tva||0)/100, ttc=ht+tvaAmt+(o.shipCost||0);
+  var lines=o.lines.map(function(l){return '• '+l.qty+' × '+l.name+' : '+money((l.price||0)*l.qty);}).join('\n');
+  return 'MEDICAL ADVANCED TECHNOLOGY\nFacture '+o.invNo+' (Commande '+o.ref+')\n\nClient : '+o.name+'\nTél : '+o.phone+'\nAdresse : '+o.addr+', '+o.city+(o.zip?' '+o.zip:'')+'\nLivraison : '+o.ship+'\nPaiement : '+o.pay+'\n\nArticles :\n'+lines+'\n\nTotal HT : '+money(ht)+'\nTVA ('+(o.tva||0)+'%) : '+money(tvaAmt)+'\nLivraison : '+money(o.shipCost||0)+'\nTOTAL TTC : '+money(ttc);
+}
+function openInvoice(){
+  if(!curOrder)return;recalc();var o=curOrder,ht=0;
+  o.lines.forEach(function(l){ht+=(l.price||0)*l.qty;});
+  var tvaAmt=ht*(o.tva||0)/100, ttc=ht+tvaAmt+(o.shipCost||0);
+  var rows=o.lines.map(function(l){return '<tr><td>'+l.name+'</td><td class="c">'+l.qty+'</td><td class="r">'+money(l.price||0)+'</td><td class="r">'+money((l.price||0)*l.qty)+'</td></tr>';}).join('');
+  document.getElementById('invoiceBox').innerHTML=
+    '<div class="inv-head"><div><div class="inv-co">Medical Advanced Technology</div><div class="inv-sm">Z.I. Sidi Abdelhamid, Rue Oxygène, Sousse, Tunisie<br>Tél : 73 321 860 · '+COMPANY_EMAIL+'</div></div><div class="inv-tag">'+(o.status==='validated'?'FACTURE':'FACTURE PROFORMA')+'</div></div>'+
+    '<div class="inv-meta"><div><b>'+o.invNo+'</b><br><span>Date : '+fmtDate(o.ts)+'</span></div><div class="r"><b>Client</b><br><span>'+o.name+'<br>'+o.addr+', '+o.city+(o.zip?' '+o.zip:'')+'<br>Tél : '+o.phone+'</span></div></div>'+
+    '<table class="inv-tbl"><thead><tr><th>Désignation</th><th class="c">Qté</th><th class="r">P.U. HT</th><th class="r">Total HT</th></tr></thead><tbody>'+rows+'</tbody></table>'+
+    '<div class="inv-tot"><div class="rl"><span>Total HT</span><span>'+money(ht)+'</span></div><div class="rl"><span>TVA ('+(o.tva||0)+'%)</span><span>'+money(tvaAmt)+'</span></div><div class="rl"><span>Livraison</span><span>'+money(o.shipCost||0)+'</span></div><div class="rl tot"><span>Total TTC</span><span>'+money(ttc)+'</span></div></div>'+
+    '<div class="inv-foot">Mode de livraison : '+o.ship+'<br>Mode de paiement : '+o.pay+(o.notes?'<br>Notes : '+o.notes:'')+'</div>';
+  go('invoice');
+}
+function printInvoice(){window.print();}
+function orderWhatsApp(){if(!curOrder)return;recalc();window.open('https://wa.me/'+waNum(curOrder.phone)+'?text='+encodeURIComponent(invoiceText(curOrder)),'_blank');}
+function invoiceWhatsApp(){orderWhatsApp();}
 
 /* PWA */
 if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));}
